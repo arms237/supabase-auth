@@ -38,9 +38,10 @@ export const AuthContextProvier = ({ children }) => {
             return {success: false, error}
         }
         console.log("sign in succes :", data);
-        return {session: true, data}
+        return {success: true, data}
     }catch{
-
+        console.error('An error occurred while signing in:', error);
+        return {success: false, error}
     }
   }
 

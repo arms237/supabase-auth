@@ -48,6 +48,7 @@ export default function Signup() {
             </Link>
           </p>
           <div className="flex flex-col py-4">
+           
             <input
               className="p-3 mt-6 border border-gray-600 rounded"
               type="text"
