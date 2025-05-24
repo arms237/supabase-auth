@@ -15,11 +15,11 @@ export const AuthContextProvier = ({ children }) => {
   //sign up
   const signUpNewUser = async ({ email, password, username }) => {
     const { data, error } = await supabase.auth.signUp({
-      options:{
-        data:{
-            username
-        }
-      },  
+      options: {
+        data: {
+          username,
+        },
+      },
       email: email,
       password: password,
     });
@@ -27,6 +27,21 @@ export const AuthContextProvier = ({ children }) => {
     if (error) {
       console.error("Error signing up: ", error);
       return { success: false, error };
+    }
+    // Inserer le profil dans la table user 
+    console.log("sign up success :", data);
+    if (data?.user) {
+      const { error: profileError } = await supabase.from("profiles").upsert([
+        {
+          id: data.user.id,
+          username,
+          avatar_url: "",
+          role: "client",
+        }
+      ]);
+      if(profileError){
+        console.error("Error inserting profile: ", profileError);
+      }
     }
     return { success: true, data };
   };
