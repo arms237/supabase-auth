@@ -7,15 +7,16 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  
+  const [username, setUsername] = useState('')
   const {session,signUpNewUser} = UserAuth()
+
   const Navigate = useNavigate();
 
   const handleSignUp = async (e) =>{
     e.preventDefault();
     setLoading(true);
     try{
-      const result = await signUpNewUser({ email, password })
+      const result = await signUpNewUser({ email, password, username });
       if (!email || !password) {
         setError("Email et mot de passe requis.");
         setLoading(false);
@@ -48,7 +49,12 @@ export default function Signup() {
             </Link>
           </p>
           <div className="flex flex-col py-4">
-           
+            <input
+              className="p-3 mt-6 border border-gray-600 rounded"
+              type="text"
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
             <input
               className="p-3 mt-6 border border-gray-600 rounded"
               type="text"

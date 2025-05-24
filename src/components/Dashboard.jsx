@@ -18,7 +18,7 @@ export default function Dashboard() {
   return (
     <div>
       <h1 className='text-3xl font-bold'>Dashboard</h1>
-      <h2 className='text-xl text-green-400'>Welcome, {session?.user?.email}</h2>
+      <h2 className='text-xl text-green-400'>Welcome, {session?.user?.user_metadata.username}</h2>
       <div>
         <p className='cursor-pointer hover:text-blue-500' onClick={handleSignOut}>Sign out</p>
       </div>

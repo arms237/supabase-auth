@@ -13,8 +13,13 @@ export const AuthContextProvier = ({ children }) => {
   const [session, setSession] = useState(undefined);
 
   //sign up
-  const signUpNewUser = async ({email, password}) => {
+  const signUpNewUser = async ({ email, password, username }) => {
     const { data, error } = await supabase.auth.signUp({
+      options:{
+        data:{
+            username
+        }
+      },  
       email: email,
       password: password,
     });
@@ -27,23 +32,23 @@ export const AuthContextProvier = ({ children }) => {
   };
 
   // sign in
-  const signInUser = async (email, password) =>{
-    try{
-        const {data, error} = await supabase.auth.signInWithPassword({
-            email: email,
-            password:password
-        });
-        if(error){
-            console.error('Sign in error occured: ', error);
-            return {success: false, error}
-        }
-        console.log("sign in succes :", data);
-        return {success: true, data}
-    }catch{
-        console.error('An error occurred while signing in:', error);
-        return {success: false, error}
+  const signInUser = async (email, password) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        console.error("Sign in error occured: ", error);
+        return { success: false, error };
+      }
+      console.log("sign in succes :", data);
+      return { success: true, data };
+    } catch {
+      console.error("An error occurred while signing in:", error);
+      return { success: false, error };
     }
-  }
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,7 +69,9 @@ export const AuthContextProvier = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, signUpNewUser, signInUser , signOut }}>
+    <AuthContext.Provider
+      value={{ session, signUpNewUser, signInUser, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
